@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782f01f35893e7140b25bec75461bf0a, type: 3}
+  m_Name: ServerObjects
+  m_EditorClassIdentifier: 
+  Objects:
+  - Name: Bullet
+    Prefab: {fileID: 5287535907965080224, guid: 9ad013e7bd680de44bc18d4f9e8da07f,
+      type: 3}
+    Count: 100
+  - Name: Missile
+    Prefab: {fileID: 8071414651239292606, guid: f0107ae3f2a29d4428792435f61ca8b0,
+      type: 3}
+    Count: 100
+  - Name: Player_Bullet_Explosion1
+    Prefab: {fileID: 8432769078250819456, guid: f0bafcf4d0dd81549a95a8a105ace761,
+      type: 3}
+    Count: 100
+  - Name: ENEMY_AI
+    Prefab: {fileID: 5036857503469397638, guid: 04e1504c1af7b314680d3153c654c91f,
+      type: 3}
+    Count: 100
+  - Name: FLOCK_AI
+    Prefab: {fileID: 5036857503469397638, guid: 04e1504c1af7b314680d3153c654c91f,
+      type: 3}
+    Count: 100
+  - Name: Object_Destoryed_Explosion
+    Prefab: {fileID: 2312591318274358134, guid: 77da29788f3010e4396994ea52057980,
+      type: 3}
+    Count: 100
+  - Name: Object_Destoryed_Explosion2
+    Prefab: {fileID: 8714244275622671896, guid: abf8d5b763621654486813c5c8af8234,
+      type: 3}
+    Count: 100
+  - Name: ASTEROID_AI
+    Prefab: {fileID: 1056666096333670, guid: f603e71ddc270d54192200e95673e2a6, type: 3}
+    Count: 100
+  - Name: ASTEROID_AI2
+    Prefab: {fileID: 1822345149752838, guid: 45b62242ff99b0a48a47f713cd6d1687, type: 3}
+    Count: 100
+  - Name: ASTEROID_AI3
+    Prefab: {fileID: 7437889339238721774, guid: a028a9caf7ccf2443a238296ded73a04,
+      type: 3}
+    Count: 100
+  - Name: DamagePointsPopUp
+    Prefab: {fileID: 2952353063648596995, guid: 95817bc28518426409411d6b4b44ec97,
+      type: 3}
+    Count: 100
