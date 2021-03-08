@@ -102,6 +102,12 @@ public class Missile : MonoBehaviour
         //rocketTarget = scriptInstance.serverObjects[targetId].transform.position;
 
 
+       
+        //Debug.Log("speed: " + speed);
+    }
+
+    private void FixedUpdate()
+    {
         Vector3 direction = rocketTarget - transform.position;
         //Debug.Log("direction: " + direction);
         direction.Normalize();
@@ -117,17 +123,12 @@ public class Missile : MonoBehaviour
         float pitch = -Mathf.Asin(direction.y) * Mathf.Rad2Deg;
         Vector3 currentRotation = new Vector3(pitch, rot, 0);
         //Vector3 currentRotation = new Vector3(/*pitch*/0, rot, 0);
-        rocketRgb.rotation = Quaternion.Euler(currentRotation );
+        rocketRgb.rotation = Quaternion.Euler(currentRotation);
         //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
+
         movement = direction;
         transform.position = transform.position + (direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime);
         transform.LookAt(rocketTarget);
-        //Debug.Log("speed: " + speed);
-    }
-
-    private void FixedUpdate()
-    {
         //if (!rocketRgb) { return; }
         //rocketRgb.MovePosition(transform.position + (direction * speed * NetworkClient.SERVER_UPDATE_TIME * Time.deltaTime));
         //Debug.Log("Please set the Rocket Target transform forawrd" + rocketLocalTransform.forward);
