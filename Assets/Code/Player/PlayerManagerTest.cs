@@ -163,6 +163,7 @@ public class PlayerManagerTest : MonoBehaviour
         }
     }
 
+
     private IEnumerator WaitAndFire(float waitTime)
     {
         if (target.enemiesOnScreen.Count > 0)

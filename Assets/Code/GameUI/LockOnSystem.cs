@@ -16,39 +16,35 @@ public class LockOnSystem : MonoBehaviour
     bool locked = false;
 
 
-    void Start()
-    {
-   
-        foreach (GameObject obj in squareTargetLock)
-        {
-            obj.SetActive(false);
-        }
-     
-        StartCoroutine("FindTargetsWithDelay", 0f);
-    }
-
-    //void Awake()
+    //void Start()
     //{
-    //    this.gameObject.SetActive(true);
     //    foreach (GameObject obj in squareTargetLock)
     //    {
     //        obj.SetActive(false);
     //    }
-
+     
     //    StartCoroutine("FindTargetsWithDelay", 0f);
     //}
 
-    void Update()
+
+    void OnEnable()
     {
-        if (player.gameObject.activeInHierarchy ==  false)
+        foreach (GameObject obj in squareTargetLock)
         {
-            Debug.Log("TURN OFF BRO");
-            foreach (GameObject obj in squareTargetLock)
-            {
-                obj.SetActive(false);
-            }
-            StopCoroutine("FindTargetsWithDelay");
+            obj.SetActive(false);
         }
+
+        StartCoroutine("FindTargetsWithDelay", 0f);
+    }
+
+    void OnDisable()
+    {
+        foreach (GameObject obj in squareTargetLock)
+        {
+            obj.SetActive(false);
+        }
+
+        StopCoroutine("FindTargetsWithDelay");
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
