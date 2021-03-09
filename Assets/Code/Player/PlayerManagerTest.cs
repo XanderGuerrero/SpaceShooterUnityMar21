@@ -45,6 +45,8 @@ public class PlayerManagerTest : MonoBehaviour
     public ParticleSystem muzzleFlashRT;
     public ParticleSystem muzzleFlashLT;
 
+    private IEnumerator coroutine;
+
     void Start()
     {
         //get the targets Id
@@ -150,59 +152,77 @@ public class PlayerManagerTest : MonoBehaviour
         }
 
         shootingCoolDownMissile.CooldownUpdate();
-        if ((Input.GetButtonDown("Fire4")) && (!shootingCoolDownMissile.IsCoolDownOn()) && target.enemiesOnScreen[0].name != string.Empty)
+        if ((Input.GetButtonDown("Fire4")) && (!shootingCoolDownMissile.IsCoolDownOn()) && target.enemiesOnScreen.Count > 0)
         {
             //Debug.Log("pressing right bumper to fire missile");
             shootingCoolDownMissile.StartCoolDown();
+            coroutine = WaitAndFire(0.25f);
+            StartCoroutine(coroutine);
+           
+           
+        }
+    }
 
-            if (alternateBulletShotSpawn == 0)
+    private IEnumerator WaitAndFire(float waitTime)
+    {
+        if (target.enemiesOnScreen.Count > 0)
+        {
+       
+            for (int i = 0; i < target.enemiesOnScreen.Count; i++)
             {
-                //define bullet in first shot spawn
-                missileData.activator = NetworkClient.ClientID;
-                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemiesOnScreen[0].name).gameObject;
-                NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
-                missileData.targetId = Hey.GetID();
-                //Debug.Log("target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID(): " + missileData.targetId);        
-                missileData.target.x = target.visibleTargets[0].gameObject.transform.position.x;
-                missileData.target.y = target.visibleTargets[0].gameObject.transform.position.y;
-                missileData.target.z = target.visibleTargets[0].gameObject.transform.position.z;
-                //target.visibleTargets.RemoveAt(0);
-                //Debug.Log("PlayerFieldOfView.visibleTargets[0].x: " + missileData.target.x);   //.name.ToString());
-                missileData.position.x = bulletSpawnPoint1.position.x.TwoDecimals();
-                missileData.position.y = bulletSpawnPoint1.position.y.TwoDecimals();
-                missileData.position.z = bulletSpawnPoint1.position.z.TwoDecimals(); 
-                missileData.direction.x = bulletSpawnPoint1.forward.x.TwoDecimals();
-                missileData.direction.y = bulletSpawnPoint1.forward.y.TwoDecimals();
-                missileData.direction.z = bulletSpawnPoint1.forward.z.TwoDecimals();
-                //Debug.Log("send bullet data: " + bulletSpawnPoint1.forward.z.TwoDecimals());
-                alternateBulletShotSpawn = 1;
+                yield return new WaitForSeconds(waitTime);
+                if (alternateBulletShotSpawn == 0)
+                {
+                    //define bullet in first shot spawn
+                    missileData.activator = NetworkClient.ClientID;
+                    GameObject obj = target.enemiesOnScreen[i].gameObject;
+                    NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
+                    missileData.targetId = Hey.GetID();
+                    //Debug.Log("target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID(): " + missileData.targetId);        
+                    missileData.target.x = target.enemiesOnScreen[i].gameObject.transform.position.x;
+                    missileData.target.y = target.enemiesOnScreen[i].gameObject.transform.position.y;
+                    missileData.target.z = target.enemiesOnScreen[i].gameObject.transform.position.z;
+                    //target.visibleTargets.RemoveAt(0);
+                    //Debug.Log("PlayerFieldOfView.visibleTargets[0].x: " + missileData.target.x);   //.name.ToString());
+                    missileData.position.x = bulletSpawnPoint1.position.x.TwoDecimals();
+                    missileData.position.y = bulletSpawnPoint1.position.y.TwoDecimals();
+                    missileData.position.z = bulletSpawnPoint1.position.z.TwoDecimals();
+                    missileData.direction.x = bulletSpawnPoint1.forward.x.TwoDecimals();
+                    missileData.direction.y = bulletSpawnPoint1.forward.y.TwoDecimals();
+                    missileData.direction.z = bulletSpawnPoint1.forward.z.TwoDecimals();
+                    //Debug.Log("send bullet data: " + bulletSpawnPoint1.forward.z.TwoDecimals());
+                    alternateBulletShotSpawn = 1;
+                    //Debug.Log("FIRE MISSILE " + i);
+                }
+                else
+                {
+                    //define bullet in second shotspawn
+                    missileData.activator = NetworkClient.ClientID;
+                    //missileData.targetId = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID();
+                    GameObject obj = target.enemiesOnScreen[i].gameObject;
+                    NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
+                    // NetworkIdentity Hey = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>(); ;
+                    missileData.targetId = Hey.GetID();
+                    //Debug.Log("PlayerFieldOfView.visibleTargets[0].name.ToString(): " + target.visibleTargets[0].GetComponent<NetworkIdentity>().GetID());   //.name.ToString());
+                    missileData.target.x = target.enemiesOnScreen[i].gameObject.transform.position.x;
+                    missileData.target.y = target.enemiesOnScreen[i].gameObject.transform.position.y;
+                    missileData.target.z = target.enemiesOnScreen[i].gameObject.transform.position.z;
+                    //target.visibleTargets.RemoveAt(0);
+                    missileData.position.x = bulletSpawnPoint2.position.x.TwoDecimals();
+                    missileData.position.y = bulletSpawnPoint2.position.y.TwoDecimals();
+                    missileData.position.z = bulletSpawnPoint2.position.z.TwoDecimals();
+                    missileData.direction.x = bulletSpawnPoint2.forward.x.TwoDecimals();
+                    missileData.direction.y = bulletSpawnPoint2.forward.y.TwoDecimals();
+                    missileData.direction.z = bulletSpawnPoint2.forward.z.TwoDecimals();
+                    //3Debug.Log("send bullet data: " + bulletSpawnPoint2.forward.z.TwoDecimals());
+                    alternateBulletShotSpawn = 0;
+                    //Debug.Log("FIRE MISSILE " + i);
+                }
+                //send the bullet
+                //Debug.Log("trying to LOOK: "+ missileData);
+                networkIdentity.GetSocket().Emit("fireMissile", new JSONObject(JsonUtility.ToJson(missileData)));
             }
-            else
-            {
-                //define bullet in second shotspawn
-                missileData.activator = NetworkClient.ClientID;
-                //missileData.targetId = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID();
-                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemiesOnScreen[0].name).gameObject;
-                NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
-               // NetworkIdentity Hey = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>(); ;
-                missileData.targetId = Hey.GetID();
-                //Debug.Log("PlayerFieldOfView.visibleTargets[0].name.ToString(): " + target.visibleTargets[0].GetComponent<NetworkIdentity>().GetID());   //.name.ToString());
-                missileData.target.x = target.visibleTargets[0].gameObject.transform.position.x;
-                missileData.target.y = target.visibleTargets[0].gameObject.transform.position.y;
-                missileData.target.z = target.visibleTargets[0].gameObject.transform.position.z;
-                //target.visibleTargets.RemoveAt(0);
-                missileData.position.x = bulletSpawnPoint2.position.x.TwoDecimals();
-                missileData.position.y = bulletSpawnPoint2.position.y.TwoDecimals();
-                missileData.position.z = bulletSpawnPoint2.position.z.TwoDecimals();
-                missileData.direction.x = bulletSpawnPoint2.forward.x.TwoDecimals();
-                missileData.direction.y = bulletSpawnPoint2.forward.y.TwoDecimals();
-                missileData.direction.z = bulletSpawnPoint2.forward.z.TwoDecimals();
-                //3Debug.Log("send bullet data: " + bulletSpawnPoint2.forward.z.TwoDecimals());
-                alternateBulletShotSpawn = 0;
-            }
-            //send the bullet
-            //Debug.Log("trying to LOOK: "+ missileData);
-            networkIdentity.GetSocket().Emit("fireMissile", new JSONObject(JsonUtility.ToJson(missileData)));
+            //print("WaitAndPrint " + Time.time);
         }
     }
 

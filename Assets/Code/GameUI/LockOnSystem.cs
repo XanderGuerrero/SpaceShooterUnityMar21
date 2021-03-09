@@ -6,29 +6,49 @@ using System;
 using UnityEngine.UI;
 
 public class LockOnSystem : MonoBehaviour
-{
-    
+{  
     public GameObject player;
     public float viewRadius;
     public LayerMask targetMask;
     public List<GameObject> squareTargetLock = new List<GameObject>();
     public List<Collider> enemiesOnScreen = new List<Collider>();
-    public List<Collider> visibleTargets = new List<Collider>();
-    //public List<string> enemyName = new List<string>();
-    public List<Transform> targets = new List<Transform>();
-    public List<GameObject> go = new List<GameObject>();
     int count = 0;
     bool locked = false;
-    int index = 0;
+
 
     void Start()
     {
+   
         foreach (GameObject obj in squareTargetLock)
         {
             obj.SetActive(false);
         }
      
         StartCoroutine("FindTargetsWithDelay", 0f);
+    }
+
+    //void Awake()
+    //{
+    //    this.gameObject.SetActive(true);
+    //    foreach (GameObject obj in squareTargetLock)
+    //    {
+    //        obj.SetActive(false);
+    //    }
+
+    //    StartCoroutine("FindTargetsWithDelay", 0f);
+    //}
+
+    void Update()
+    {
+        if (player.gameObject.activeInHierarchy ==  false)
+        {
+            Debug.Log("TURN OFF BRO");
+            foreach (GameObject obj in squareTargetLock)
+            {
+                obj.SetActive(false);
+            }
+            StopCoroutine("FindTargetsWithDelay");
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -38,6 +58,7 @@ public class LockOnSystem : MonoBehaviour
             yield return new WaitForSeconds(delay);
             FindVisibleTargets();
         }
+        
     }
 
     void FindVisibleTargets()
@@ -68,33 +89,20 @@ public class LockOnSystem : MonoBehaviour
                     enemiesOnScreen.Add(targetsInViewRadius[i]);
                     count++;
                 }
-                if (!visibleTargets.Contains(targetsInViewRadius[i]))
-                {
-                    //Debug.Log("hi ");
-                    visibleTargets.Add(targetsInViewRadius[i]);
-                }
 
             }
 
             //if the ai is on the list of on screen enemies but is not on screen
             if (enemiesOnScreen.Contains(targetsInViewRadius[i]) && !isOnScreen)
             {
-                //Debug.Log("hi ");
-                //locked = false;
-                //targets = null;
+         
                 var ind = enemiesOnScreen.IndexOf(targetsInViewRadius[i]);
                 squareTargetLock[ind].SetActive(false);
-                //Debug.Log(ind);
+     
 
                 //remove the ai
                 enemiesOnScreen.Remove(targetsInViewRadius[i]);
-                //enemyName.Remove(targetsInViewRadius[i].name);
-                //targets.Remove(visibleTargets.Find(item => item.name == targetsInViewRadius[i].name).transform);
-                //go.Remove(visibleTargets.Find(item => item.name == targetsInViewRadius[i].name).gameObject);
-                //var ind = targets.IndexOf(targetsInViewRadius[i].transform);
-                //squareTargetLock[ind].SetActive(false);
-                //check the count and reduce it by one
-                //if the count is already 0, dont decrement
+
                 if (count == 0)
                 {
                     count = 0;
@@ -110,31 +118,11 @@ public class LockOnSystem : MonoBehaviour
         //if the butoon a is pressed is the system is not locked and there are enemies on screen
         if (Input.GetButtonDown("Fire3") && !locked && enemiesOnScreen.Count > 0)
         {
-            index = 0;
-
-            //Debug.Log(enemiesOnScreen.Count);
-            //add all the eneies to the target list
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    if (enemiesOnScreen[i] != null)
-            //    {
-            //        //targets.Add(visibleTargets.Find(item => item.name == enemiesOnScreen[i].name).transform);
-            //        //go.Add(visibleTargets.Find(item => item.name == enemiesOnScreen[i].name).gameObject);
-         
-            //    }
-            //}
-            //index = 0;
-            //enemyName = enemiesOnScreen[0].name;
             locked = true;
-            //if (enemiesOnScreen.Any())
-            //{
 
-            //}
-            //else
-            //{
-                Debug.Log("TARGETS LOCKED");
-            //}
+            Debug.Log("TARGETS LOCKED");      
         }
+
         //button A again
         else if (Input.GetButtonDown("Fire3") && locked)
         {
@@ -143,12 +131,9 @@ public class LockOnSystem : MonoBehaviour
                 squareTargetLock[i].transform.position = Vector3.zero;
                 squareTargetLock[i].SetActive(false);
             }
-            //enemyName.Clear();
-            locked = false;
-            //enemyName = string.Empty;
-            //targets.Clear();// = null;
 
-            //crosshair[0].SetActive(false);
+            locked = false;
+
             Debug.Log("TARGET UNLOCKED");
         }
 
@@ -170,31 +155,15 @@ public class LockOnSystem : MonoBehaviour
 
                     if (isOnScreenFinalCheck)
                     {
-
-                        squareTargetLock[i].transform.position = Vector3.Slerp(squareTargetLock[i].transform.position, new Vector3(enemyPos.x, enemyPos.y, 0), Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
-
-                        //if (i == 0)
-                        //{
-                        //    squareTargetLock[i].GetComponent<Image>().color = Color.red;
-                        //}
-
+                        squareTargetLock[i].transform.position = Vector3.Slerp(squareTargetLock[i].transform.position, new Vector3(enemyPos.x, enemyPos.y, 0), Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME * 5);
+                        squareTargetLock[i].GetComponent<Image>().color = Color.red;
                         squareTargetLock[i].SetActive(true);
+                    }
 
-                    }
-                    else
+                    //Debug.Log(i);
+                    if (enemiesOnScreen[i].gameObject.activeInHierarchy == false)
                     {
-                        //squareTargetLock[i].SetActive(false);
-                    }
-                    Debug.Log(i);
-                    if (enemiesOnScreen[i].gameObject.activeSelf == false)
-                    {
-                        //Debug.Log("TURNING OFF: " );
-                        //locked = false;
-                        //enemyName = string.Empty;
-                        //target = null;
                         squareTargetLock[i].SetActive(false);
-                        //enemiesOnScreen.Clear();
-                        //Debug.Log("target: " + target.transform.position);
                     }
                 }
             }
@@ -203,7 +172,6 @@ public class LockOnSystem : MonoBehaviour
                 foreach (GameObject target in squareTargetLock)
                 {
                     target.SetActive(false);
-                    //Debug.Log(str);
                 }
             }
         }

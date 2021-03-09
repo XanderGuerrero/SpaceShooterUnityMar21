@@ -321,24 +321,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39c8bea702bfd2a449ac7546e42e96f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 3811560486978322862}
   viewRadius: 75000
   targetMask:
     serializedVersion: 2
     m_Bits: 128
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 64
-  visibleTargets: []
   squareTargetLock:
   - {fileID: 2796633575666677818}
   - {fileID: 1228297074629165032}
   - {fileID: 7383923239510183271}
   - {fileID: 198890263408144253}
   - {fileID: 5916027474554275748}
-  player: {fileID: 3811560486978322862}
-  targets: []
   enemiesOnScreen: []
-  enemyName: []
 --- !u!114 &4468246572145371459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6935,6 +6929,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TargetLock (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7419819512743821282, guid: 9c328285952a52a49b1c96e6d3f1931b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c328285952a52a49b1c96e6d3f1931b, type: 3}
 --- !u!224 &6625073583544412934 stripped
@@ -7383,6 +7382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TargetLock (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7419819512743821282, guid: 9c328285952a52a49b1c96e6d3f1931b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c328285952a52a49b1c96e6d3f1931b, type: 3}
 --- !u!224 &8039481580239905221 stripped
@@ -7539,6 +7543,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TargetLock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419819512743821282, guid: 9c328285952a52a49b1c96e6d3f1931b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c328285952a52a49b1c96e6d3f1931b, type: 3}
@@ -8063,6 +8072,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TargetLock (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7419819512743821282, guid: 9c328285952a52a49b1c96e6d3f1931b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c328285952a52a49b1c96e6d3f1931b, type: 3}
 --- !u!1 &198890263408144253 stripped
@@ -8350,6 +8364,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TargetLock (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7419819512743821282, guid: 9c328285952a52a49b1c96e6d3f1931b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c328285952a52a49b1c96e6d3f1931b, type: 3}
