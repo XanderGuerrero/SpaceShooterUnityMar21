@@ -150,7 +150,7 @@ public class PlayerManagerTest : MonoBehaviour
         }
 
         shootingCoolDownMissile.CooldownUpdate();
-        if ((Input.GetButtonDown("Fire4")) && (!shootingCoolDownMissile.IsCoolDownOn()) && target.enemyName[0] != string.Empty)
+        if ((Input.GetButtonDown("Fire4")) && (!shootingCoolDownMissile.IsCoolDownOn()) && target.enemiesOnScreen[0].name != string.Empty)
         {
             //Debug.Log("pressing right bumper to fire missile");
             shootingCoolDownMissile.StartCoolDown();
@@ -159,7 +159,7 @@ public class PlayerManagerTest : MonoBehaviour
             {
                 //define bullet in first shot spawn
                 missileData.activator = NetworkClient.ClientID;
-                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemyName[0]).gameObject;
+                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemiesOnScreen[0].name).gameObject;
                 NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
                 missileData.targetId = Hey.GetID();
                 //Debug.Log("target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID(): " + missileData.targetId);        
@@ -182,7 +182,7 @@ public class PlayerManagerTest : MonoBehaviour
                 //define bullet in second shotspawn
                 missileData.activator = NetworkClient.ClientID;
                 //missileData.targetId = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>().GetID();
-                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemyName[0]).gameObject;
+                GameObject obj = target.visibleTargets.Find(item => item.name == target.enemiesOnScreen[0].name).gameObject;
                 NetworkIdentity Hey = obj.GetComponent<NetworkIdentity>(); ;
                // NetworkIdentity Hey = target.visibleTargets[0].gameObject.GetComponent<NetworkIdentity>(); ;
                 missileData.targetId = Hey.GetID();
