@@ -11,6 +11,10 @@ public class PlayerManagerTest : MonoBehaviour
     private Transform bulletSpawnPoint1;
     [SerializeField]
     private Transform bulletSpawnPoint2;
+    [SerializeField]
+    private Transform missileSpawnPoint1;
+    [SerializeField]
+    private Transform missileSpawnPoint2;
     private int alternateBulletShotSpawn = 0;
     float xRotation = 0f;
     float yRotation = 0f;
@@ -163,8 +167,13 @@ public class PlayerManagerTest : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        Debug.Log("stoping missile coroutine");
+        StopCoroutine("WaitAndFire");
+    }
 
-    private IEnumerator WaitAndFire(float waitTime)
+    IEnumerator WaitAndFire(float waitTime)
     {
         if (target.enemiesOnScreen.Count > 0)
         {
@@ -185,12 +194,12 @@ public class PlayerManagerTest : MonoBehaviour
                     missileData.target.z = target.enemiesOnScreen[i].gameObject.transform.position.z;
                     //target.visibleTargets.RemoveAt(0);
                     //Debug.Log("PlayerFieldOfView.visibleTargets[0].x: " + missileData.target.x);   //.name.ToString());
-                    missileData.position.x = bulletSpawnPoint1.position.x.TwoDecimals();
-                    missileData.position.y = bulletSpawnPoint1.position.y.TwoDecimals();
-                    missileData.position.z = bulletSpawnPoint1.position.z.TwoDecimals();
-                    missileData.direction.x = bulletSpawnPoint1.forward.x.TwoDecimals();
-                    missileData.direction.y = bulletSpawnPoint1.forward.y.TwoDecimals();
-                    missileData.direction.z = bulletSpawnPoint1.forward.z.TwoDecimals();
+                    missileData.position.x = missileSpawnPoint1.position.x.TwoDecimals();
+                    missileData.position.y = missileSpawnPoint1.position.y.TwoDecimals();
+                    missileData.position.z = missileSpawnPoint1.position.z.TwoDecimals();
+                    missileData.direction.x = missileSpawnPoint1.forward.x.TwoDecimals();
+                    missileData.direction.y = missileSpawnPoint1.forward.y.TwoDecimals();
+                    missileData.direction.z = missileSpawnPoint1.forward.z.TwoDecimals();
                     //Debug.Log("send bullet data: " + bulletSpawnPoint1.forward.z.TwoDecimals());
                     alternateBulletShotSpawn = 1;
                     //Debug.Log("FIRE MISSILE " + i);
@@ -209,12 +218,12 @@ public class PlayerManagerTest : MonoBehaviour
                     missileData.target.y = target.enemiesOnScreen[i].gameObject.transform.position.y;
                     missileData.target.z = target.enemiesOnScreen[i].gameObject.transform.position.z;
                     //target.visibleTargets.RemoveAt(0);
-                    missileData.position.x = bulletSpawnPoint2.position.x.TwoDecimals();
-                    missileData.position.y = bulletSpawnPoint2.position.y.TwoDecimals();
-                    missileData.position.z = bulletSpawnPoint2.position.z.TwoDecimals();
-                    missileData.direction.x = bulletSpawnPoint2.forward.x.TwoDecimals();
-                    missileData.direction.y = bulletSpawnPoint2.forward.y.TwoDecimals();
-                    missileData.direction.z = bulletSpawnPoint2.forward.z.TwoDecimals();
+                    missileData.position.x = missileSpawnPoint2.position.x.TwoDecimals();
+                    missileData.position.y = missileSpawnPoint2.position.y.TwoDecimals();
+                    missileData.position.z = missileSpawnPoint2.position.z.TwoDecimals();
+                    missileData.direction.x = missileSpawnPoint2.forward.x.TwoDecimals();
+                    missileData.direction.y = missileSpawnPoint2.forward.y.TwoDecimals();
+                    missileData.direction.z = missileSpawnPoint2.forward.z.TwoDecimals();
                     //3Debug.Log("send bullet data: " + bulletSpawnPoint2.forward.z.TwoDecimals());
                     alternateBulletShotSpawn = 0;
                     //Debug.Log("FIRE MISSILE " + i);
