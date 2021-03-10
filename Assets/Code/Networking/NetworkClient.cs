@@ -409,7 +409,7 @@ public class NetworkClient : SocketIOComponent
             float shipTiltX = E.data["shipTiltRotationX"].f;
             float shipTiltY = E.data["shipTiltRotationY"].f;
 
-            Debug.LogFormat("Data back to the client rotation values: ({0}) ", barrelRotation);
+            //Debug.LogFormat("Data back to the client rotation values: ({0}) ", barrelRotation);
             NetworkIdentity ni = serverObjects[id];
             ni.GetComponent<Rigidbody>().rotation = Quaternion.Euler(shipTiltX, shipTiltY, 0f);
             //ni.GetComponent<Rigidbody>().rotation = Quaternion.Euler(shipTiltX, shipTiltY, ShipTilt);
