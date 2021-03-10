@@ -14,9 +14,10 @@ public class Crosshair : MonoBehaviour
     //private Transform target;
     // Start is called before the first frame update
 
-    private void Start()
+    public void SetUp(Vector3 position, Vector3 direction)
     {
-       
+        player.transform.position = position;
+        player.transform.forward = direction;
     }
 
 
@@ -28,7 +29,7 @@ public class Crosshair : MonoBehaviour
         //var targetPosition = new Vector3(player.transform.position.x, player.transform.position.y, newPos);
         Vector3 crosshairPositionOnScreen = Camera.main.WorldToScreenPoint(newPos);
 
-        playerCrosshair.transform.position = Vector3.Slerp(playerCrosshair.transform.position, new Vector3(crosshairPositionOnScreen.x, crosshairPositionOnScreen.y, 0)/*Camera.main.WorldToScreenPoint(target.position)*/, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
+        playerCrosshair.transform.position = Vector3.Lerp(playerCrosshair.transform.position, new Vector3(crosshairPositionOnScreen.x, crosshairPositionOnScreen.y, 0)/*Camera.main.WorldToScreenPoint(target.position)*/, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
 
         playerCrosshair.SetActive(true);
 

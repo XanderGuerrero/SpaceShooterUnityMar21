@@ -76,6 +76,10 @@ public class NetworkClient : SocketIOComponent
             //everything we spawn will have a network identity
             NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
             ni.SetControllerID(id);
+            if (ni.IsControlling() == false)
+            {
+                ni.GetComponentInChildren<Canvas>().enabled = false;
+            }
             ni.SetScoketReference(this);
 
             serverObjects.Add(id, ni);
@@ -409,9 +413,9 @@ public class NetworkClient : SocketIOComponent
             float shipTiltX = E.data["shipTiltRotationX"].f;
             float shipTiltY = E.data["shipTiltRotationY"].f;
 
-            Debug.LogFormat("Data back to the client rotation values: ({0}) ", barrelRotation);
+            //Debug.LogFormat("Data back to the client rotation values: ({0}) ", barrelRotation);
             NetworkIdentity ni = serverObjects[id];
-            ni.GetComponent<Rigidbody>().rotation = Quaternion.Euler(shipTiltX, shipTiltY, 0f);
+            ni.GetComponent<Rigidbody>().rotation = Quaternion.Euler(shipTiltX, shipTiltY, ShipTilt);
             //ni.GetComponent<Rigidbody>().rotation = Quaternion.Euler(shipTiltX, shipTiltY, ShipTilt);
             //ni.transform.localEulerAngles = new Vector3(shipTiltX, shipTiltY, shipTilt);
             //ni.GetComponent<PlayerManager>().SetRotation(barrelRotation);
@@ -479,36 +483,23 @@ public class NetworkClient : SocketIOComponent
         On("UpdateAI", (E) =>
         {
            //Debug.Log("Got Data back, ROTATION :  " + E.data);
-
             string id = E.data["id"].ToString();
             id = id.Trim('"');
             float x = E.data["position"]["x"].f;
             float y = E.data["position"]["y"].f;
             float z = E.data["position"]["z"].f;
-            //spawnedObject.name = string.Format("{0}({1})", name, id);
+
             //Debug.Log("about to fire5");
             float directionX = E.data["direction"]["x"].f;
             float directionY = E.data["direction"]["y"].f;
             float directionZ = E.data["direction"]["z"].f;
-            //string activator = E.data["activator"].ToString();
-            //activator = activator.Trim('"');
-            //Debug.Log("about to fire5");
+
             float speed = E.data["speed"].f;
-            //Debug.Log("server spawn bullet speed " + speed);
-          
+            //Debug.Log("server spawn bullet speed " + speed);         
             NetworkIdentity ni = serverObjects[id];
           
             if (ni.gameObject.activeInHierarchy)
             {
-                //Debug.Log("ABOUT TO UPDATE THE AI POSITION, DATA : ({0}) " + E.data);
-                //ni.GetComponent<FlockAI>().Position = new Vector3(x, y, z);
-                //ni.GetComponent<FlockAI>().Speed = speed;
-                //ni.transform.position = new Vector3(x, y, z);
-                
-                //ni.transform.position = Vector3.Lerp(ni.transform.position, new Vector3(x, y, z), 10f * Time.deltaTime);
-                //ni.transform.localEulerAngles = new Vector3(shipTiltX, shipTiltY, shipTilt);
-                //ni.GetComponent<AIManager>().SetBarrelRotation(barrelRotation);
-                //ni.GetComponent<AIManager>().SetEnemyShipRotation(shipTiltX, shipTiltY, shipTilt);
                 //calculate rotation
                 float rot = Mathf.Atan2(directionX, directionZ) * Mathf.Rad2Deg;
                 float pitch = -Mathf.Asin(directionY) * Mathf.Rad2Deg;
@@ -518,56 +509,53 @@ public class NetworkClient : SocketIOComponent
                 StartCoroutine(AIPositionSmoothing(ni.transform, new Vector3(x, y, z)));
                 if (ni.gameObject.name.Contains("FLOCK_AI"))
                 {
-                    //StartCoroutine(AIPositionSmoothing(ni.transform, new Vector3(x, y, z)));
-                    //Debug.Log("ABOUT TO UPDATE THE FLOCK POSITION, DATA x: " + x + " " + "y: "+ y + " " + "z: " + z);
                     FlockAI Flock_AI = ni.GetComponent<FlockAI>();
                     Flock_AI.SetEnemyShipRotation(rot, pitch);
                     //Debug.Log("AI direction is: " + AI.Direction + " speed: " + speed);
                 }
                 if (ni.gameObject.name.Contains("ASTEROID_AI"))
                 {
-                    //StartCoroutine(AIPositionSmoothing(ni.transform, new Vector3(x, y, z)));
-                    //Debug.Log("ABOUT TO UPDATE THE FLOCK POSITION, DATA x: " + x + " " + "y: "+ y + " " + "z: " + z);
                     AsteroidAI asteroid = ni.GetComponent<AsteroidAI>();
-                    //asteroid.SetEnemyShipRotation(rot, pitch);
-                    //Debug.Log("AI direction is: " + AI.Direction + " speed: " + speed);
                 }
                 else
                 {
-                    //StartCoroutine(AIPositionSmoothing(ni.transform, new Vector3(x, y, z)));
-                    //AIManager AI = ni.GetComponent<AIManager>();
-                    //AI.SetEnemyShipRotation(rot, pitch);
-                    //AI.Direction = new Vector3(directionX, directionY, directionZ);
-                    //AI.Speed = speed;
-                    //Missile missile = ni.GetComponent<Missile>();
-                    //missile.Direction = new Vector3(directionX, directionY, directionZ);
-                    //missile.Speed = speed;
 
-                    //need to add the target Id to add the updated targets position to the missile script
-                    //if (serverObjects.ContainsKey(targetId))
-                    //{
-                    //    //Debug.Log("this Enemy target DOES exist");
-                    //    missile.RocketTarget = serverObjects[targetId].transform;
-                    //    missile.RocketTarget.position = new Vector3(targetx, targety, targetz); ;
-                    //}
-                    //else
-                    //{
-                    //    missile.RocketTarget = serverObjects[targetId].transform;
-                    //    missile.RocketTarget.position = new Vector3(targetx, targety, targetz); ;
-                    //    //Debug.Log("this missile target doesnt exist");
-                    //    // }
-                    //Projectile projectile = ni.GetComponent<Projectile>();
-                    //projectile.Direction = new Vector3(directionX, directionY, directionZ);
-                    //projectile.Speed = speed;
-                    //}
                 }
-                //AIManager AI = ni.GetComponent<AIManager>();
-                //AI.SetEnemyShipRotation(rot, pitch);
-                //AI.Direction = new Vector3(directionX, directionY, directionZ);
-                //AI.Speed = speed;
-                //FlockAI Flock_AI = ni.GetComponent<FlockAI>();
-                //Flock_AI.SetEnemyShipRotation(rot, pitch);
-                //Debug.Log("AI direction is: " + AI.Direction + " speed: " + speed);
+            }
+        });
+        
+
+        On("UpdatePlayerCrosshair", (E) =>
+        {
+            //Debug.Log("Got Data back, ROTATION :  " + E.data);
+            string id = E.data["id"].ToString();
+            id = id.Trim('"');
+            float x = E.data["position"]["x"].f;
+            float y = E.data["position"]["y"].f;
+            float z = E.data["position"]["z"].f;
+
+            //Debug.Log("about to fire5");
+            float directionX = E.data["direction"]["x"].f;
+            float directionY = E.data["direction"]["y"].f;
+            float directionZ = E.data["direction"]["z"].f;
+
+            //float speed = E.data["speed"].f;
+            //Debug.Log("server spawn bullet speed " + speed);         
+            NetworkIdentity ni = serverObjects[id];
+
+            if (ni.gameObject.activeInHierarchy)
+            {
+                //calculate rotation
+                float rot = Mathf.Atan2(directionX, directionZ) * Mathf.Rad2Deg;
+                float pitch = -Mathf.Asin(directionY) * Mathf.Rad2Deg;
+
+                StartCoroutine(AIPositionSmoothing(ni.transform, new Vector3(x, y, z)));
+                if (ni.gameObject.name.Contains("FLOCK_AI"))
+                {
+                    Crosshair Corsshair = ni.GetComponent<Crosshair>();
+                    Corsshair.SetUp(new Vector3(x, y, z), new Vector3(directionX, directionY, directionZ));
+                    //Debug.Log("AI direction is: " + AI.Direction + " speed: " + speed);
+                }          
             }
         });
 
