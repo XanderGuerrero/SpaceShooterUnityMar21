@@ -72,7 +72,7 @@ public class NetworkRotation : MonoBehaviour
         player.shipTiltRotationX = transform.localEulerAngles.x.TwoDecimals();
         player.shipTiltRotationY =  transform.localEulerAngles.y.TwoDecimals();
         //player.barrelRotation = playermanager.GetLastRotation().TwoDecimals();
-        Debug.Log("send rot data: " + player.shipTiltRotation);
+        //Debug.Log("send rot data: " + player.shipTiltRotation);
         networkIdentity.GetSocket().Emit("updateRotation", new JSONObject(JsonUtility.ToJson(player)));
     }
 
