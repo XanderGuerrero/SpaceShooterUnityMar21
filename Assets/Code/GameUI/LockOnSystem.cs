@@ -151,7 +151,7 @@ public class LockOnSystem : MonoBehaviour
 
                     if (isOnScreenFinalCheck)
                     {
-                        squareTargetLock[i].transform.position = Vector3.Slerp(squareTargetLock[i].transform.position, new Vector3(enemyPos.x, enemyPos.y, 0), Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME * 5);
+                        squareTargetLock[i].transform.position = Vector3.Lerp(squareTargetLock[i].transform.position, new Vector3(enemyPos.x, enemyPos.y, 0), Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME );
                         squareTargetLock[i].GetComponent<Image>().color = Color.red;
                         squareTargetLock[i].SetActive(true);
                     }

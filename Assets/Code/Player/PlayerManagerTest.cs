@@ -253,13 +253,13 @@ public class PlayerManagerTest : MonoBehaviour
         if (Input.GetAxis("Fire2") == 1f)
         {
             //Debug.Log("trying to move forward ");
-            engLight.intensity = Mathf.Lerp(engLight.intensity, 3f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
+            engLight.intensity = Mathf.Lerp(engLight.intensity, 1.5f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
             activeForwardSpeed =  Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Fire2") * ForwardSpeed, forwardAcceleration * Time.deltaTime);
             rb.velocity += transform.forward * activeForwardSpeed * Time.deltaTime;
         }
         else
         {
-            engLight.intensity = Mathf.Lerp(engLight.intensity, 1f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
+            engLight.intensity = Mathf.Lerp(engLight.intensity, 0f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
         }
     }
 
