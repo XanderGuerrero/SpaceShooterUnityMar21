@@ -79,7 +79,8 @@ public class NetworkClient : SocketIOComponent
             if (ni.IsControlling() == false)
             {
                 ni.GetComponentInChildren<Canvas>().enabled = false;
-                ni.GetComponentInChildren<Light>().enabled = false;
+                ni.GetComponentInChildren<Light>().intensity = .2f;
+                ni.GetComponentInChildren<Light>().range = .2f;
             }
             ni.SetScoketReference(this);
 
