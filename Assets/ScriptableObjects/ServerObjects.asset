@@ -22,8 +22,7 @@ MonoBehaviour:
       type: 3}
     Count: 100
   - Name: Player_Bullet_Explosion1
-    Prefab: {fileID: 8432769078250819456, guid: f0bafcf4d0dd81549a95a8a105ace761,
-      type: 3}
+    Prefab: {fileID: 1000011945391522, guid: 78b71003e8b357d4bbf89c8b5e5e4f0e, type: 3}
     Count: 100
   - Name: ENEMY_AI
     Prefab: {fileID: 5036857503469397638, guid: 04e1504c1af7b314680d3153c654c91f,

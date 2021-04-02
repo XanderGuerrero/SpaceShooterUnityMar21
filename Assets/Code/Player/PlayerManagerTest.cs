@@ -67,7 +67,7 @@ public class PlayerManagerTest : MonoBehaviour
         missileData.target = new Position();
         MissileLocalTransform = this.GetComponent<Transform>();
         engineLight = this.gameObject.transform.GetChild(1).gameObject;
-        engLight = engineLight.GetComponent<Light>();
+        engLight = engineLight.GetComponentInChildren<Light>();
 
     }
 
@@ -90,7 +90,7 @@ public class PlayerManagerTest : MonoBehaviour
             checkAiming();
    
             checkTilt();
-            checkShooting();
+            //checkShooting();
 
             //deltaRotation = Quaternion.Euler(
             //new Vector3(currentXrotation * lookRateSpeed * Time.deltaTime, currentYrotation * lookRateSpeed * Time.deltaTime, -rollInput * rollSpeed * Time.deltaTime)
