@@ -5331,6 +5331,8 @@ MonoBehaviour:
   networkIdentity: {fileID: 23367424867711577}
   muzzleFlashRT: {fileID: 3323463668896367813}
   muzzleFlashLT: {fileID: 6429307711909633531}
+  PlayerShot: {fileID: 8300000, guid: 56c2ee139e8c844ba9a3a17370e3b763, type: 3}
+  Missile: {fileID: 8300000, guid: 281e15cc92254794eaf05caf4d044b76, type: 3}
 --- !u!114 &6619003850090802747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6376,6 +6378,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 269222602837561225, guid: e9881b5688e148e45a2587cf9e50b2b9,
+        type: 3}
+      propertyPath: LockOnSoundFX
+      value: 
+      objectReference: {fileID: 8300000, guid: ef20e0c97d6a04ed9b2ef1350c7ea03c, type: 3}
     - target: {fileID: 305682218700566818, guid: e9881b5688e148e45a2587cf9e50b2b9,
         type: 3}
       propertyPath: m_Name
@@ -6880,6 +6887,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerRespawnRings
+      objectReference: {fileID: 0}
+    - target: {fileID: 4450404305956281896, guid: 18920751ac489ed42a0ca6182d4b7701,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5766837020584938945, guid: 18920751ac489ed42a0ca6182d4b7701,
         type: 3}

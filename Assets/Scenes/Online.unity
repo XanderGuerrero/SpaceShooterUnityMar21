@@ -192,6 +192,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 3811560486978322862, guid: b556c3df6f5e5244a8bffc3183d3e65d,
     type: 3}
   serverSpawnables: {fileID: 11400000, guid: ba1fd3b2a13393749b00a791523f3230, type: 2}
+  Respawn: {fileID: 8300000, guid: eec3bf121b316d64ca1c8aac7573a2f4, type: 3}
+  Explosion: {fileID: 8300000, guid: bb2e2714f962491428dcb0b38598b251, type: 3}
 --- !u!4 &115823595
 Transform:
   m_ObjectHideFlags: 0

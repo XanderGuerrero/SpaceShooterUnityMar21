@@ -22,16 +22,20 @@ public class NetworkClient : SocketIOComponent
     public static string ClientID { get; private set; }
     string[] AsteroidPrefabNames = { "ASTEROID_AI", "ASTEROID_AI2", "ASTEROID_AI3" };
     public Dictionary<string, NetworkIdentity> serverObjects;
-
-
+    AudioManager audioSource;
+    public AudioClip Respawn;
+    public AudioClip Explosion;
+      
     // Start is called before the first frame update
     public override void Start()
     {
         //this calls the start method in the SocketIOComponent to connect
         base.Start();
         //used to clean up start
+        audioSource = FindObjectOfType<AudioManager>();
         initialize();
         setupEvents();
+
     }
 
     private void initialize()
@@ -72,6 +76,7 @@ public class NetworkClient : SocketIOComponent
             string id = E.data["id"].ToString();
             id = id.Trim('"');
             GameObject go = Instantiate(playerPrefab, networkContainer);
+            audioSource.PlaySFX(Respawn);
             go.name = string.Format("Player({0})", id);
             //everything we spawn will have a network identity
             NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
@@ -174,6 +179,8 @@ public class NetworkClient : SocketIOComponent
                     Projectile projectile = spawnedObject.GetComponent<Projectile>();
                     projectile.Direction = new Vector3(directionX, directionY, directionZ);
                     projectile.Speed = speed;
+                    
+                    
                 }
                 //    //if Asteroid1, apply tumble and  as well
                 if (name == AsteroidPrefabNames[0] || name == AsteroidPrefabNames[1] || name == AsteroidPrefabNames[2])
@@ -350,7 +357,7 @@ public class NetworkClient : SocketIOComponent
                 ni.SetScoketReference(this);
                 //add the obj to the dictinary of objs
                 serverObjects.Add(id, ni);
-
+                audioSource.PlaySFX(Explosion);
                 //DemoMouseController Explosion = spawnedObject.GetComponent<DemoMouseController>();
                 //Explosion.Position = new Vector3(x, y, z);
                 //Debug.Log("serverSpawnExplosion - explosion TIME ");
@@ -644,6 +651,10 @@ public class NetworkClient : SocketIOComponent
             NetworkIdentity ni = serverObjects[id];
             ni.transform.position = new Vector3(x, y, z);
             ni.gameObject.SetActive(true);
+            if (ni.IsControlling() == true)
+            {
+                audioSource.PlaySFX(Respawn);
+            }
         });
 
         On("updatePlayerHealth", (E) =>

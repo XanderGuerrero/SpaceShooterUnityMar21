@@ -109,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkIdentity: {fileID: 3047209769270689368}
   whoActivatedMe: {fileID: 97509046321238354}
+  BulletImpact: {fileID: 8300000, guid: 2e071f5b8b8467d45a5e6e24c23c6ad4, type: 3}
 --- !u!114 &7586707047269297767
 MonoBehaviour:
   m_ObjectHideFlags: 0

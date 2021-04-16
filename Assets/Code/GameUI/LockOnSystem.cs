@@ -14,17 +14,12 @@ public class LockOnSystem : MonoBehaviour
     public List<Collider> enemiesOnScreen = new List<Collider>();
     int count = 0;
     bool locked = false;
-
-
-    //void Start()
-    //{
-    //    foreach (GameObject obj in squareTargetLock)
-    //    {
-    //        obj.SetActive(false);
-    //    }
-     
-    //    StartCoroutine("FindTargetsWithDelay", 0f);
-    //}
+    AudioManager audioSource;
+    public AudioClip LockOnSoundFX;
+    void Start()
+    {
+        audioSource = FindObjectOfType<AudioManager>();
+    }
 
 
     void OnEnable()
@@ -115,7 +110,7 @@ public class LockOnSystem : MonoBehaviour
         if (Input.GetButtonDown("Fire3") && !locked && enemiesOnScreen.Count > 0)
         {
             locked = true;
-
+            audioSource.PlaySFX(LockOnSoundFX);
             Debug.Log("TARGETS LOCKED");      
         }
 
@@ -129,7 +124,7 @@ public class LockOnSystem : MonoBehaviour
             }
 
             locked = false;
-
+            audioSource.PlaySFX(LockOnSoundFX);
             Debug.Log("TARGET UNLOCKED");
         }
 

@@ -32,8 +32,8 @@ public class SpawnEffect : MonoBehaviour {
 
         ps = ps.GetComponent<ParticleSystem>();
 
-        var main = ps.main;
-        main.duration = spawnEffectTime;
+        //var main = ps.main;
+        //main.duration = spawnEffectTime;
         //ps.transform.position = this.transform.position;
         ps.Play();
     }
@@ -68,14 +68,14 @@ public class SpawnEffect : MonoBehaviour {
 
     void Update ()
     {
-        if (timer < spawnEffectTime + pause)
-        {
-            timer += Time.deltaTime;
-        }
-        else
-        {
-            ps.Play();
-        }
+        //if (timer < spawnEffectTime + pause)
+        //{
+        //    timer += Time.deltaTime;
+        //}
+        //else
+        //{
+        //    ps.Play();
+        //}
 
         foreach (Renderer rend in renderer1.Skip(1))
         {

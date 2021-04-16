@@ -48,7 +48,10 @@ public class PlayerManagerTest : MonoBehaviour
     private float intensitySmooth = 2f;
     public ParticleSystem muzzleFlashRT;
     public ParticleSystem muzzleFlashLT;
-
+    AudioManager audioSource;
+    public AudioClip PlayerShot;
+    public AudioClip Missile;
+    //public float volume = 0.5f;
     private IEnumerator coroutine;
 
     void Start()
@@ -68,7 +71,7 @@ public class PlayerManagerTest : MonoBehaviour
         MissileLocalTransform = this.GetComponent<Transform>();
         engineLight = this.gameObject.transform.GetChild(1).gameObject;
         engLight = engineLight.GetComponentInChildren<Light>();
-
+        audioSource = FindObjectOfType<AudioManager>();
     }
 
 
@@ -153,6 +156,8 @@ public class PlayerManagerTest : MonoBehaviour
             }
             //send the bullet
             networkIdentity.GetSocket().Emit("fireBullet", new JSONObject(JsonUtility.ToJson(bulletData)));
+            //audioSource.PlayOneShot(clip, volume);
+            audioSource.PlaySFX(PlayerShot);
         }
 
         shootingCoolDownMissile.CooldownUpdate();
@@ -162,8 +167,8 @@ public class PlayerManagerTest : MonoBehaviour
             shootingCoolDownMissile.StartCoolDown();
             coroutine = WaitAndFire(0.25f);
             StartCoroutine(coroutine);
-           
-           
+            
+
         }
     }
 
@@ -231,6 +236,7 @@ public class PlayerManagerTest : MonoBehaviour
                 //send the bullet
                 //Debug.Log("trying to LOOK: "+ missileData);
                 networkIdentity.GetSocket().Emit("fireMissile", new JSONObject(JsonUtility.ToJson(missileData)));
+                audioSource.PlaySFX(Missile);
             }
             //print("WaitAndPrint " + Time.time);
         }

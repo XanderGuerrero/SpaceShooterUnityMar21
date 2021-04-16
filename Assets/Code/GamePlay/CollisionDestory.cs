@@ -11,14 +11,14 @@ public class CollisionDestory : MonoBehaviour
     private float dist;
     //private IdData CollisionData;
     //private string networkIDofCollidedObject;
-
-
+    AudioManager audioSource;
+    public AudioClip BulletImpact;
 
     // Start is called before the first frame update
-    //void Start()
-    //{
-    //    CollisionData = new IdData();
-    //}
+    void Start()
+    {
+        audioSource = FindObjectOfType<AudioManager>();
+    }
 
 
 
@@ -61,7 +61,8 @@ public class CollisionDestory : MonoBehaviour
 
                 })));
                 this.gameObject.SetActive( false);
-            }
+                //audioSource.PlaySFX(BulletImpact, .3f);
+        }
        // }
     }
 }
