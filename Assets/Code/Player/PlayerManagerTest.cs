@@ -51,6 +51,8 @@ public class PlayerManagerTest : MonoBehaviour
     AudioManager audioSource;
     public AudioClip PlayerShot;
     public AudioClip Missile;
+    public AudioClip EngineSound;
+    public AudioClip EngineShutdownSound;
     //public float volume = 0.5f;
     private IEnumerator coroutine;
 
@@ -157,7 +159,7 @@ public class PlayerManagerTest : MonoBehaviour
             //send the bullet
             networkIdentity.GetSocket().Emit("fireBullet", new JSONObject(JsonUtility.ToJson(bulletData)));
             //audioSource.PlayOneShot(clip, volume);
-            audioSource.PlaySFX(PlayerShot);
+            audioSource.PlaySFX(PlayerShot, .3f);
         }
 
         shootingCoolDownMissile.CooldownUpdate();
@@ -236,7 +238,7 @@ public class PlayerManagerTest : MonoBehaviour
                 //send the bullet
                 //Debug.Log("trying to LOOK: "+ missileData);
                 networkIdentity.GetSocket().Emit("fireMissile", new JSONObject(JsonUtility.ToJson(missileData)));
-                audioSource.PlaySFX(Missile);
+                audioSource.PlaySFX(Missile, .5f);
             }
             //print("WaitAndPrint " + Time.time);
         }
@@ -258,13 +260,14 @@ public class PlayerManagerTest : MonoBehaviour
     {
         if (Input.GetAxis("Fire2") == 1f)
         {
-            //Debug.Log("trying to move forward ");
+
             engLight.intensity = Mathf.Lerp(engLight.intensity, 2f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
             activeForwardSpeed =  Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Fire2") * ForwardSpeed, forwardAcceleration * Time.deltaTime);
             rb.velocity += transform.forward * activeForwardSpeed * Time.deltaTime;
         }
         else if (Input.GetAxis("Fire2") < .75f)
         {
+
             engLight.intensity = Mathf.Lerp(engLight.intensity, .5f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
         }
     }

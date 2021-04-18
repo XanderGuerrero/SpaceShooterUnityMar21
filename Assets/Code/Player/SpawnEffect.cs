@@ -18,9 +18,11 @@ public class SpawnEffect : MonoBehaviour {
     Material[] mats;
     MeshRenderer[] children;
     Renderer[] renderer1;
-
+    AudioManager audioSource;
+    bool firstTime = true;
     void Start ()
     {
+        audioSource = FindObjectOfType<AudioManager>();
         shaderProperty = Shader.PropertyToID("_cutoff");
         children = GetComponentsInChildren<MeshRenderer>();
         foreach(MeshRenderer child in children.Skip(1))
@@ -36,21 +38,26 @@ public class SpawnEffect : MonoBehaviour {
         //main.duration = spawnEffectTime;
         //ps.transform.position = this.transform.position;
         ps.Play();
+        //audioSource.PlaySFX2("Alien Ship Hum Loop 1", .7f);
     }
 
     void OnDisable()
     {
+        audioSource.StopSFX2("Alien Ship Hum Loop 1");
+        //audioSource.StopCoroutine("Alien Ship Hum Loop 1");
         foreach (MeshRenderer child in children.Skip(1))
         {
             child.material = respawnMaterial;
         }
-     
+        firstTime = true;
         timer = 0;
         ps.Stop();
+        
     }
 
     void OnEnable()
     {
+        audioSource = FindObjectOfType<AudioManager>();
         shaderProperty = Shader.PropertyToID("_cutoff");
         children = GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer child in children.Skip(1))
@@ -64,6 +71,8 @@ public class SpawnEffect : MonoBehaviour {
         var main = ps.main;
         main.duration = spawnEffectTime;
         ps.Play();
+        //audioSource.PlaySFX2("Alien Ship Hum Loop 1", .7f);
+        //firstTime = false;
     }
 
     void Update ()
@@ -84,9 +93,12 @@ public class SpawnEffect : MonoBehaviour {
             rend.material.SetFloat("_Blend", lerp);
         }
 
-        if (ps.isPlaying == false)
+        if (ps.isPlaying == false && firstTime == true)
         {
+
+            firstTime = false;
             ps.Stop();
+            audioSource.PlaySFX2("Alien Ship Hum Loop 1", .7f);
             var i = 0;
             foreach (MeshRenderer child in children.Skip(1))
             {
@@ -94,6 +106,7 @@ public class SpawnEffect : MonoBehaviour {
                 child.material = PlayerShipMaterials[i];
                 i++;
             }
+            
         }
     }
 }

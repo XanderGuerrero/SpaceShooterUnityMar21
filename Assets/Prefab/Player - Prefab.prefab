@@ -5333,6 +5333,8 @@ MonoBehaviour:
   muzzleFlashLT: {fileID: 6429307711909633531}
   PlayerShot: {fileID: 8300000, guid: 56c2ee139e8c844ba9a3a17370e3b763, type: 3}
   Missile: {fileID: 8300000, guid: 281e15cc92254794eaf05caf4d044b76, type: 3}
+  EngineSound: {fileID: 8300000, guid: f9125fd4b9b73b245968b5c9af04c7cb, type: 3}
+  EngineShutdownSound: {fileID: 8300000, guid: a275ba9b634590046b9528b4bdffece8, type: 3}
 --- !u!114 &6619003850090802747
 MonoBehaviour:
   m_ObjectHideFlags: 0

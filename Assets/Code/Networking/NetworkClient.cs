@@ -75,8 +75,14 @@ public class NetworkClient : SocketIOComponent
             //passed data
             string id = E.data["id"].ToString();
             id = id.Trim('"');
+            float x = E.data["position"]["x"].f;
+            //Debug.Log("X :" + x);
+            float y = E.data["position"]["y"].f;
+            //Debug.Log("Y :" + y);
+            float z = E.data["position"]["z"].f;
             GameObject go = Instantiate(playerPrefab, networkContainer);
-            audioSource.PlaySFX(Respawn);
+            go.transform.position = new Vector3(x, y, z);
+            audioSource.PlaySFX(Respawn, 1f);
             go.name = string.Format("Player({0})", id);
             //everything we spawn will have a network identity
             NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
@@ -91,6 +97,7 @@ public class NetworkClient : SocketIOComponent
 
             serverObjects.Add(id, ni);
             //Debug.Log("Connection Made! PLAYER: " + id + "has joined the game");
+           
         });
 
         On("serverSpawn", (E) =>
@@ -357,7 +364,7 @@ public class NetworkClient : SocketIOComponent
                 ni.SetScoketReference(this);
                 //add the obj to the dictinary of objs
                 serverObjects.Add(id, ni);
-                audioSource.PlaySFX(Explosion);
+                audioSource.PlaySFX(Explosion, .5f);
                 //DemoMouseController Explosion = spawnedObject.GetComponent<DemoMouseController>();
                 //Explosion.Position = new Vector3(x, y, z);
                 //Debug.Log("serverSpawnExplosion - explosion TIME ");
@@ -639,6 +646,7 @@ public class NetworkClient : SocketIOComponent
                 ni.GetComponent<AIManager>().StopCoroutines();
             }
             ni.gameObject.SetActive(false);
+            
         });
 
         On("playerRespawn", (E) =>
@@ -653,7 +661,7 @@ public class NetworkClient : SocketIOComponent
             ni.gameObject.SetActive(true);
             if (ni.IsControlling() == true)
             {
-                audioSource.PlaySFX(Respawn);
+                audioSource.PlaySFX(Respawn, 1f);
             }
         });
 

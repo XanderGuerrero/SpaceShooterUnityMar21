@@ -35,6 +35,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource musicSource;
     private AudioSource musicSource2;
     private AudioSource sfxSource;
+    private AudioSource sfxSource2;
     private bool firstMusicSourceIsPlaying;
     int trackCount = 0;
     float time = 0.0f;
@@ -48,34 +49,38 @@ public class AudioManager : MonoBehaviour
         musicSource = this.gameObject.AddComponent<AudioSource>();
         musicSource2 = this.gameObject.AddComponent<AudioSource>();
         sfxSource = this.gameObject.AddComponent<AudioSource>();
-
+        sfxSource2 = this.gameObject.AddComponent<AudioSource>();
         //loop the music tracks
         musicSource.loop = false;
-        musicSource2.loop = false;
+        //musicSource2.loop = true;
         sfxSource.loop = false;
+        sfxSource2.loop = true;
+        sfxSource2.pitch = .7f;
     }
 
     public void Start()
     {
-        SetMusicVolume(1.0f);
-        PlayMusicWithFade(BGM[trackCount]);
+        //SetMusicVolume(1.0f);
+        PlayMusicWithFade(BGM[trackCount], musicSource);
+        //PlayMusic(BGM[11], musicSource2);
         //trackCount++;
     }
 
     public void Update()
     {
         //determine which source is active
-        AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
-        if(activeSource.clip != null)
+        //AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
+        AudioSource BGMSource = musicSource;
+        if (BGMSource.clip != null)
         {
             //time = Time.time;
             //Debug.Log(time);
-            if (!activeSource.isPlaying)
+            if (!BGMSource.isPlaying)
             {
                 //time = 0.0f;
                 trackCount++;
                 Debug.Log(trackCount);
-                PlayMusicWithFade(BGM[trackCount], 1.0f);
+                PlayMusicWithFade(BGM[trackCount], musicSource);
                 
                 if (trackCount == 10)
                     trackCount = 0;
@@ -85,15 +90,28 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void PlayMusic(AudioClip musicClip)
+    public void PlayMusic(AudioClip musicClip, AudioSource source)
     {
         //determine which source is active
-        AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
-
-        activeSource.clip = musicClip;
-        activeSource.volume = 1;
-        activeSource.Play();
-        Debug.Log("Audio clip length : " + activeSource.clip.length);
+        //AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
+        Debug.Log(musicClip.name);
+        Debug.Log(BGM[11].name);
+        if (musicClip.name == BGM[11].name)
+        {
+            source.clip = musicClip;
+            source.volume = .7f;
+            source.pitch = .7f;
+            source.loop = true;
+            source.Play();
+            Debug.Log("Audio clip length : " + source.clip.length);
+        }
+        else
+        {
+            source.clip = musicClip;
+            source.volume = .75f;
+            source.Play();
+            Debug.Log("Audio clip length : " + source.clip.length);
+        }
     }
 
     public void PlaySFX(AudioClip clip)
@@ -106,11 +124,35 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
-    public void PlayMusicWithFade(AudioClip newClip, float transitionTime = 1.0f)
+    public void PlaySFX2(string clip, float volume)
+    {
+        Debug.Log(clip);
+      
+        //s = Array.Find(sounds, sound => sound.name == name);
+        sfxSource2.clip = BGM.Find(x => x.name == clip);
+        Debug.Log(sfxSource2.clip.name);
+        sfxSource2.volume = volume;
+        sfxSource2.Play();
+        
+    }
+
+    public void StopSFX2(string clip)
+    {
+        sfxSource2.Stop();
+    }
+
+    public void StopSFX(string clip)
+    {
+
+        sfxSource.Stop();
+    }
+
+    public void PlayMusicWithFade(AudioClip newClip, AudioSource source, float transitionTime = 1.0f)
     {
         //determine which source is active
-        AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
-        StartCoroutine(UpdateMusicWithFade(activeSource, newClip, transitionTime));
+        //AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
+        source.volume = .75f;
+        StartCoroutine(UpdateMusicWithFade(source, newClip, transitionTime, source.volume));
 
     }
 
@@ -126,24 +168,24 @@ public class AudioManager : MonoBehaviour
         //Set the fields of the aduio source, then start the coroutine to crosfade
         newSource.clip = musicClip;
         newSource.Play();
-        StartCoroutine(UpdateMusicWithCrossFade(activeSource, newSource, transitionTime));
+        StartCoroutine(UpdateMusicWithCrossFade(activeSource, newSource, transitionTime, activeSource.volume));
 
     }
 
-    private IEnumerator UpdateMusicWithCrossFade(AudioSource original, AudioSource newSource, float transitionTime)
+    private IEnumerator UpdateMusicWithCrossFade(AudioSource original, AudioSource newSource, float transitionTime, float musicVolume)
     {
         float t = 0.0f;
-        for (t = 0.0f; t <= transitionTime; t += Time.deltaTime)
+        for (t = 0.0f; t < transitionTime; t += Time.deltaTime)
         {
-            original.volume = (1 - (t / transitionTime));
-            newSource.volume = (t / transitionTime);
+            original.volume = (musicVolume - ((t / transitionTime)* musicVolume));
+            newSource.volume = (t / transitionTime) * musicVolume;
             yield return null;
         }
 
         original.Stop();
     }
 
-    private IEnumerator UpdateMusicWithFade(AudioSource activeSource, AudioClip newClip, float transitionTime)
+    private IEnumerator UpdateMusicWithFade(AudioSource activeSource, AudioClip newClip, float transitionTime, float musicVolume)
     {
         //make sure the source is avtive and playing
         if (!activeSource.isPlaying)
@@ -153,9 +195,9 @@ public class AudioManager : MonoBehaviour
             float t = 0.0f;
 
             //Fade Out
-            for (t = 0; t < transitionTime; t += Time.deltaTime)
+            for (t = 0; t <= transitionTime; t += Time.deltaTime)
             {
-                activeSource.volume = (1 - (t / transitionTime));
+                activeSource.volume = (musicVolume - ((t / transitionTime)* musicVolume));
                 yield return null;
             }
 
@@ -164,9 +206,9 @@ public class AudioManager : MonoBehaviour
             activeSource.Play();
 
             //Fade In
-            for (t = 0; t < transitionTime; t +=Time.deltaTime)
+            for (t = 0; t <= transitionTime; t +=Time.deltaTime)
             {
-                activeSource.volume = (t / transitionTime);
+                activeSource.volume = (t / transitionTime) * musicVolume;
                 yield return null;
             }
         }

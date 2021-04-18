@@ -968,6 +968,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831cec625e69728428bb5cacec2bc243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BGM:
+  - {fileID: 8300000, guid: c9a21af491a99054097ed9107e97cc6e, type: 3}
+  - {fileID: 8300000, guid: a0b6d0500cac2e34a994edf2552ad6e3, type: 3}
+  - {fileID: 8300000, guid: 3ccfcf0c00927ab4685b6b04c4b83d24, type: 3}
+  - {fileID: 8300000, guid: 879378e031251d146bd5ffa90442172e, type: 3}
+  - {fileID: 8300000, guid: 9d2439dbffdd36e4183ab3c10cb16624, type: 3}
+  - {fileID: 8300000, guid: ca554bd9137752b46ab64f3360477591, type: 3}
+  - {fileID: 8300000, guid: 3e51c75bbbd5f0e47b87292d2684d497, type: 3}
+  - {fileID: 8300000, guid: 01d9c1cf97d07de46b3100d8e2b630df, type: 3}
+  - {fileID: 8300000, guid: e8eb0d4c038ed444bb07cd61772fc668, type: 3}
+  - {fileID: 8300000, guid: 77c15976c7dda17498e00796482ca97c, type: 3}
+  - {fileID: 8300000, guid: f9d57a4ca36f51b4cbbd947b5ee76359, type: 3}
+  - {fileID: 8300000, guid: ad9f1927a624b461292de652c3954813, type: 3}
+  - {fileID: 8300000, guid: f9125fd4b9b73b245968b5c9af04c7cb, type: 3}
+  - {fileID: 8300000, guid: a275ba9b634590046b9528b4bdffece8, type: 3}
 --- !u!4 &974763347
 Transform:
   m_ObjectHideFlags: 0
@@ -1960,7 +1975,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.747346, y: 1}
+    m_SensorSize: {x: 1.2316602, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
