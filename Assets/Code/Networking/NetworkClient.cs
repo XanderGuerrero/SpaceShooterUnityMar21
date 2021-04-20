@@ -10,7 +10,7 @@ public class NetworkClient : SocketIOComponent
 {
     public const float SERVER_UPDATE_TIME = 10;
     public static Action<SocketIOEvent> OnGameStateChange = (E) => { };
-
+    public static Action OnSignInComplete = () => { };
     [Header("Network Client")]
     [SerializeField]
     private Transform networkContainer;
@@ -19,13 +19,30 @@ public class NetworkClient : SocketIOComponent
     [SerializeField]
     private ServerObjects serverSpawnables;
     //can get the id anywhere but cannot set it anywhere except this class
-    public static string ClientID { get; private set; }
+    public static string ClientID {
+        get;
+        private set;
+    }
+
+    public static bool isConnected
+    {
+        get;
+        private set;
+    }
+
+    private static bool OldIsConnected
+    {
+        get;
+        set;
+    }
+
     string[] AsteroidPrefabNames = { "ASTEROID_AI", "ASTEROID_AI2", "ASTEROID_AI3" };
     public Dictionary<string, NetworkIdentity> serverObjects;
     AudioManager audioSource;
     public AudioClip Respawn;
     public AudioClip Explosion;
-      
+    private MenuManager Menu;
+    
     // Start is called before the first frame update
     public override void Start()
     {
@@ -42,6 +59,7 @@ public class NetworkClient : SocketIOComponent
     {
         //initialize the dictionary
         serverObjects = new Dictionary<string, NetworkIdentity>();
+        
     }
 
 
@@ -51,6 +69,12 @@ public class NetworkClient : SocketIOComponent
         //this calls the Update method in the SocketIOComponent
         base.Update();
 
+        //if(NetworkClient.OldIsConnected && NetworkClient.isConnected)
+        //{
+        //    NetworkClient.OldIsConnected = false;
+        //    ClientID = "";
+        //    ReturnToMainMenu();
+        //}
     }
 
     private void setupEvents()
@@ -60,11 +84,20 @@ public class NetworkClient : SocketIOComponent
             Debug.Log("Connection made to the server");
         });
 
+        //On("close", (E) =>
+        //{
+        //    NetworkClient.isConnected = false;
+
+        //    Debug.Log("Closing connection to the server");
+        //});
 
         On("register", (E) =>
         {
             ClientID = E.data["id"].ToString();
             ClientID = ClientID.Trim('"');
+
+            NetworkClient.isConnected = true;
+            NetworkClient.OldIsConnected = true;
         });
 
         //the event 'spawn' or any event name must match what the node server
@@ -75,27 +108,34 @@ public class NetworkClient : SocketIOComponent
             //passed data
             string id = E.data["id"].ToString();
             id = id.Trim('"');
+            Debug.Log("id :" + id);
             float x = E.data["position"]["x"].f;
-            //Debug.Log("X :" + x);
+            Debug.Log("X :" + x);
             float y = E.data["position"]["y"].f;
-            //Debug.Log("Y :" + y);
+            Debug.Log("Y :" + y);
             float z = E.data["position"]["z"].f;
-            GameObject go = Instantiate(playerPrefab, networkContainer);
-            go.transform.position = new Vector3(x, y, z);
-            audioSource.PlaySFX(Respawn, 1f);
-            go.name = string.Format("Player({0})", id);
-            //everything we spawn will have a network identity
-            NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
-            ni.SetControllerID(id);
-            if (ni.IsControlling() == false)
+            Debug.Log("Z :" + z);
+            if (!serverObjects.ContainsKey(id))
             {
-                ni.GetComponentInChildren<Canvas>().enabled = false;
-                ni.GetComponentInChildren<Light>().intensity = .2f;
-                ni.GetComponentInChildren<Light>().range = .2f;
-            }
-            ni.SetScoketReference(this);
+                GameObject go = Instantiate(playerPrefab, networkContainer);
+                go.transform.position = new Vector3(x, y, z);
+                audioSource.PlaySFX(Respawn, 1f);
+                go.name = string.Format("Player({0})", id);
+                //everything we spawn will have a network identity
+                NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
+                ni.SetControllerID(id);
+                if (ni.IsControlling() == false)
+                {
+                    ni.GetComponentInChildren<Canvas>().enabled = false;
+                    ni.GetComponentInChildren<Light>().intensity = .2f;
+                    ni.GetComponentInChildren<Light>().range = .2f;
+                }
+                ni.SetScoketReference(this);
 
-            serverObjects.Add(id, ni);
+                serverObjects.Add(id, ni);
+                Debug.Log("Connection Made! PLAYER: " + id + "has joined the game");
+            }
+         
             //Debug.Log("Connection Made! PLAYER: " + id + "has joined the game");
            
         });
@@ -735,6 +775,10 @@ public class NetworkClient : SocketIOComponent
         });
 
 
+        On("signIn", (E) =>
+        {
+            OnSignInComplete.Invoke();
+        });
         //public override void Awake()
         //{
         //    //this calls the Awake method in the SocketIOComponent
@@ -747,6 +791,22 @@ public class NetworkClient : SocketIOComponent
     {
         Emit("joinGame");
     }
+
+    //private void ReturnToMainMenu()
+    //{
+    //    foreach(var keyValuePair in serverObjects)
+    //    {
+    //        if(keyValuePair.Value != null)
+    //        {
+    //            Destroy(keyValuePair.Value.gameObject);
+    //        }
+    //    }
+    //    serverObjects.Clear();
+    //    SceneManagementManager.Instance.LoadLevel(SceneList.MAIN_MENU, (levelName) => {
+    //        SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+    //        Menu.OnSignInComplete();
+    //    });
+    //}
 
     private IEnumerator AIPositionSmoothing(Transform AiTransform, Vector3 goalPosition)
     {

@@ -29,9 +29,9 @@ public class LevelDataEditor : ScriptableWizard
 
         LevelData levelData = new LevelData();
         levelData.teamOneSpawn = new List<LevelDataElement>();
-        levelData.TeamTwoSpawn = new List<LevelDataElement>();
-        levelData.ItemSpawn = new List<LevelDataElement>();
-        levelData.FreeForAllSpawn = new List<LevelDataElement>();
+        levelData.teamTwoSpawn = new List<LevelDataElement>();
+        levelData.itemSpawn = new List<LevelDataElement>();
+        levelData.freeForAllSpawn = new List<LevelDataElement>();
 
 
         children.ForEach(child  =>
@@ -49,13 +49,13 @@ public class LevelDataEditor : ScriptableWizard
                     levelData.teamOneSpawn.Add(data);
                     break;
                 case LevelDataHelperType.Team_Two_Spawn:
-                    levelData.TeamTwoSpawn.Add(data);
+                    levelData.teamTwoSpawn.Add(data);
                     break;
                 case LevelDataHelperType.Item_Spawn:
-                    levelData.ItemSpawn.Add(data);
+                    levelData.itemSpawn.Add(data);
                     break;
                 case LevelDataHelperType.Free_For_All_Spawn:
-                    levelData.FreeForAllSpawn.Add(data);
+                    levelData.freeForAllSpawn.Add(data);
                     break;
             }
         });

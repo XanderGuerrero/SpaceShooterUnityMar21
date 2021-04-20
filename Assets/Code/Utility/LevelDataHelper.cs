@@ -70,9 +70,9 @@ public class LevelData
 {
     //data representation of anything that will be in a level 
     public List<LevelDataElement> teamOneSpawn;
-    public List<LevelDataElement> TeamTwoSpawn;
-    public List<LevelDataElement> ItemSpawn;
-    public List<LevelDataElement> FreeForAllSpawn;
+    public List<LevelDataElement> teamTwoSpawn;
+    public List<LevelDataElement> itemSpawn;
+    public List<LevelDataElement> freeForAllSpawn;
 }
 
 [Serializable]
