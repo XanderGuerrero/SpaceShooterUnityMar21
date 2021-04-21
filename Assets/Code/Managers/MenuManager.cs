@@ -44,7 +44,7 @@ public class MenuManager : MonoBehaviour
 
         NetworkClient.OnSignInComplete += OnSignInComplete;
 
-        SceneManagementManager.Instance.LoadLevel(levelName: SceneList.ONLINE, (levelName) => {
+        SceneManagementManager.Instance.LoadLevel(SceneList.ONLINE, (levelName) => {
             signInContainer.SetActive(true);
             joinContainer.SetActive(false);
             QueueButton.interactable = true;
@@ -54,6 +54,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     public void OnQueue()
     {
+        Debug.Log("Joining the game!!!!!!!");
         //call the servers join game event
         SocketReference.Emit("joinGame");
     }

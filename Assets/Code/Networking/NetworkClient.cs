@@ -24,7 +24,7 @@ public class NetworkClient : SocketIOComponent
         private set;
     }
 
-    public static bool isConnected
+    public static bool IsConnected
     {
         get;
         private set;
@@ -69,12 +69,12 @@ public class NetworkClient : SocketIOComponent
         //this calls the Update method in the SocketIOComponent
         base.Update();
 
-        //if(NetworkClient.OldIsConnected && NetworkClient.isConnected)
-        //{
-        //    NetworkClient.OldIsConnected = false;
-        //    ClientID = "";
-        //    ReturnToMainMenu();
-        //}
+        if (NetworkClient.OldIsConnected && !NetworkClient.IsConnected)
+        {
+            NetworkClient.OldIsConnected = false;
+            ClientID = "";
+            ReturnToMainMenu();
+        }
     }
 
     private void setupEvents()
@@ -84,19 +84,19 @@ public class NetworkClient : SocketIOComponent
             Debug.Log("Connection made to the server");
         });
 
-        //On("close", (E) =>
-        //{
-        //    NetworkClient.isConnected = false;
+        On("close", (E) =>
+        {
+            NetworkClient.IsConnected = false;
 
-        //    Debug.Log("Closing connection to the server");
-        //});
+            Debug.Log("Closing connection to the server");
+        });
 
         On("register", (E) =>
         {
             ClientID = E.data["id"].ToString();
             ClientID = ClientID.Trim('"');
 
-            NetworkClient.isConnected = true;
+            NetworkClient.IsConnected = true;
             NetworkClient.OldIsConnected = true;
         });
 
@@ -133,7 +133,7 @@ public class NetworkClient : SocketIOComponent
                 ni.SetScoketReference(this);
 
                 serverObjects.Add(id, ni);
-                Debug.Log("Connection Made! PLAYER: " + id + "has joined the game");
+                Debug.Log("Connection Made! PLAYER: "+ go.name + " with id:  " + id + " has joined the game");
             }
          
             //Debug.Log("Connection Made! PLAYER: " + id + "has joined the game");
@@ -701,7 +701,7 @@ public class NetworkClient : SocketIOComponent
             ni.gameObject.SetActive(true);
             if (ni.IsControlling() == true)
             {
-                audioSource.PlaySFX(Respawn, 1f);
+               audioSource.PlaySFX(Respawn, 1f);
             }
         });
 
@@ -761,13 +761,18 @@ public class NetworkClient : SocketIOComponent
 
         });
 
-        On("loadGame", (E) =>
-        {
-            Debug.Log(message: "Switching to game");
-            SceneManagementManager.Instance.LoadLevel(SceneList.LEVEL, onLevelLoaded: (levelName) => {
+        On("loadGame", (E) => {
+            Debug.Log("Switching to game");
+            SceneManagementManager.Instance.LoadLevel(SceneList.LEVEL, (levelName) => {
                 SceneManagementManager.Instance.UnLoadLevel(SceneList.MAIN_MENU);
             });
         });
+
+
+        On("unloadGame", (E) => {
+            ReturnToMainMenu();
+        });
+
 
         On("lobbyUpdate", (E) =>
         {
@@ -792,21 +797,33 @@ public class NetworkClient : SocketIOComponent
         Emit("joinGame");
     }
 
-    //private void ReturnToMainMenu()
-    //{
-    //    foreach(var keyValuePair in serverObjects)
-    //    {
-    //        if(keyValuePair.Value != null)
-    //        {
-    //            Destroy(keyValuePair.Value.gameObject);
-    //        }
-    //    }
-    //    serverObjects.Clear();
-    //    SceneManagementManager.Instance.LoadLevel(SceneList.MAIN_MENU, (levelName) => {
-    //        SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
-    //        Menu.OnSignInComplete();
-    //    });
-    //}
+    public void OnQuit()
+    {
+        Debug.Log("Quitting server");
+        Emit("quitGame");
+        ReturnToMainMenu();
+    }
+
+    private void ReturnToMainMenu()
+    {
+        foreach(var obj in serverObjects)
+        {
+            obj.Value.gameObject.SetActive(false);
+        }
+        foreach (var keyValuePair in serverObjects)
+        {
+            if (keyValuePair.Value != null)
+            {
+                Destroy(keyValuePair.Value.gameObject);
+            }
+        }
+        serverObjects.Clear();
+        SceneManagementManager.Instance.LoadLevel(SceneList.MAIN_MENU, (levelName) =>
+        {
+            SceneManagementManager.Instance.UnLoadLevel(SceneList.LEVEL);
+            FindObjectOfType<MenuManager>().OnSignInComplete();
+        });
+    }
 
     private IEnumerator AIPositionSmoothing(Transform AiTransform, Vector3 goalPosition)
     {

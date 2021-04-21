@@ -176,6 +176,7 @@ public class PlayerManagerTest : MonoBehaviour
 
     void OnDisable()
     {
+        AimFollowPlayer.firstTime = true;
         Debug.Log("stoping missile coroutine");
         StopCoroutine("WaitAndFire");
     }
@@ -293,4 +294,5 @@ public class PlayerManagerTest : MonoBehaviour
         }
        
     }
+
 }
