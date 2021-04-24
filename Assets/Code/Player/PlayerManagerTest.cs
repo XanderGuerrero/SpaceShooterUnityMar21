@@ -176,6 +176,7 @@ public class PlayerManagerTest : MonoBehaviour
 
     void OnDisable()
     {
+        RadarCameraFollowPlayer.firstTime = true;
         AimFollowPlayer.firstTime = true;
         Debug.Log("stoping missile coroutine");
         StopCoroutine("WaitAndFire");

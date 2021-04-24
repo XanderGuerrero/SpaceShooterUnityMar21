@@ -130,7 +130,7 @@ public class AudioManager : MonoBehaviour
       
         //s = Array.Find(sounds, sound => sound.name == name);
         sfxSource2.clip = BGM.Find(x => x.name == clip);
-        Debug.Log(sfxSource2.clip.name);
+        //Debug.Log(sfxSource2.clip.name);
         sfxSource2.volume = volume;
         sfxSource2.Play();
         

@@ -834,6 +834,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1763072068910683100, guid: fb4eb0634d2331545828ef75b0f72605,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 75.00012
+      objectReference: {fileID: 0}
     - target: {fileID: 1763072069354212850, guid: fb4eb0634d2331545828ef75b0f72605,
         type: 3}
       propertyPath: m_Name

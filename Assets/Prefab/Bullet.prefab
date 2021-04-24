@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 705896440118557492}
   - component: {fileID: 2628905621454220118}
   - component: {fileID: 2709547759877067720}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SingleLine-LightSaber
   m_TagString: Untagged
   m_Icon: {fileID: 0}

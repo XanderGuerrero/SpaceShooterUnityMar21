@@ -15,10 +15,10 @@ TagManager:
   - UI
   - Obstacles
   - Targets
-  - Quit
-  - 
-  - 
-  - 
+  - Player
+  - Bullet
+  - PostProcessing
+  - EnemyRadarTarget
   - 
   - 
   - 
