@@ -389,9 +389,9 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 59.2
-    OrthographicSize: 897.4
+    OrthographicSize: 2500
     NearClipPlane: 0.3
-    FarClipPlane: 662
+    FarClipPlane: 705.65
     Dutch: 0
     ModeOverride: 1
     LensShift: {x: 0, y: 0}
@@ -1068,10 +1068,10 @@ Camera:
     width: 0.2
     height: 0.4
   near clip plane: 0.3
-  far clip plane: 662
+  far clip plane: 705.65
   field of view: 59.2
   orthographic: 1
-  orthographic size: 897.4
+  orthographic size: 2500
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1208,12 +1208,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3ccfcf0c00927ab4685b6b04c4b83d24, type: 3}
   - {fileID: 8300000, guid: 879378e031251d146bd5ffa90442172e, type: 3}
   - {fileID: 8300000, guid: 9d2439dbffdd36e4183ab3c10cb16624, type: 3}
-  - {fileID: 8300000, guid: ca554bd9137752b46ab64f3360477591, type: 3}
+  - {fileID: 8300000, guid: 3c6b8797e6fdd924ba52424b985b04b1, type: 3}
+  - {fileID: 8300000, guid: 3c6b8797e6fdd924ba52424b985b04b1, type: 3}
   - {fileID: 8300000, guid: 3e51c75bbbd5f0e47b87292d2684d497, type: 3}
   - {fileID: 8300000, guid: 01d9c1cf97d07de46b3100d8e2b630df, type: 3}
-  - {fileID: 8300000, guid: e8eb0d4c038ed444bb07cd61772fc668, type: 3}
+  - {fileID: 8300000, guid: fa48fd069663c416c8ae40edb1dbe116, type: 3}
   - {fileID: 8300000, guid: 77c15976c7dda17498e00796482ca97c, type: 3}
   - {fileID: 8300000, guid: f9d57a4ca36f51b4cbbd947b5ee76359, type: 3}
+  - {fileID: 8300000, guid: ca554bd9137752b46ab64f3360477591, type: 3}
+  - {fileID: 8300000, guid: e8eb0d4c038ed444bb07cd61772fc668, type: 3}
+  FX:
+  - {fileID: 8300000, guid: ef3f7321293ed4927ae042b0369b1271, type: 3}
+  - {fileID: 8300000, guid: 03f5e86c9f8af40468e062c1662b3436, type: 3}
+  - {fileID: 8300000, guid: e8f399cf1b9564a5fbfaf719decf8ee0, type: 3}
   - {fileID: 8300000, guid: ad9f1927a624b461292de652c3954813, type: 3}
   - {fileID: 8300000, guid: f9125fd4b9b73b245968b5c9af04c7cb, type: 3}
   - {fileID: 8300000, guid: a275ba9b634590046b9528b4bdffece8, type: 3}
@@ -1326,12 +1333,12 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 1015
-  m_RenderingPath: -1
+  m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -1385,7 +1392,7 @@ MonoBehaviour:
     m_Bits: 2
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
-  antialiasingMode: 0
+  antialiasingMode: 1
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
@@ -2209,7 +2216,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.2071778, y: 1}
+    m_SensorSize: {x: 1.2784704, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2280,7 +2287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 3
-  m_FollowOffset: {x: 0, y: 138.1, z: -42.1}
+  m_FollowOffset: {x: 0, y: 365.1, z: -1.3}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1

@@ -14,12 +14,14 @@ public class CollisionDestory : MonoBehaviour
     AudioManager audioSource;
     public AudioClip BulletImpact;
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = FindObjectOfType<AudioManager>();
+        //audioSource = FindObjectOfType<AudioManager>();
     }
-
 
 
     public void OnCollisionEnter(Collision collision)
@@ -28,42 +30,18 @@ public class CollisionDestory : MonoBehaviour
         //get the identity of the object we collided with
         NetworkIdentity ni = collision.gameObject.GetComponent<NetworkIdentity>();
 
-        //networkIDofCollidedObject = ni.ToString();
-        //if (ni == null)
-        //{
-        //    CollisionData.collisionObjectsNetID = "environment";
-        //    CollisionData.id = this.networkIdentity.GetID();
-        //}
-        //else
-        //{
-        //    string nameOfCollisionObj = ni.ToString().Substring(0, ni.ToString().IndexOf('('));
-        //    string stringBeforeChar = ni.ToString().Substring(ni.ToString().IndexOf('('), ni.ToString().IndexOf(')'));
-        //    stringBeforeChar = stringBeforeChar.Substring(stringBeforeChar.IndexOf('('), stringBeforeChar.ToString().IndexOf(')'));
-        //    stringBeforeChar = stringBeforeChar.Substring(stringBeforeChar.LastIndexOf('(') + 1);
-        //    CollisionData.collisionObjectsNetID = stringBeforeChar;
-        //    CollisionData.name = nameOfCollisionObj;
-        //    var Dist = collision.gameObject.transform.position - collision.other.gameObject.transform.position;
 
-            if (ni == null || ni.GetID() != this.whoActivatedMe.GetActivator())
-            {
-                //Debug.Log("whoActivatedMe: " + whoActivatedMe.GetActivator());
-                //CollisionData.distance = 0;
-                //CollisionData.id = this.networkIdentity.GetID();
-                ////Debug.Log("asteroid position: " + collision.gameObject.transform.position);
-                //CollisionData.position.x = collision.gameObject.transform.position.x;
-                //CollisionData.position.y = collision.gameObject.transform.position.y;
-                //CollisionData.position.z = collision.gameObject.transform.position.z;
+        if (ni == null || ni.GetID() != this.whoActivatedMe.GetActivator())
+        {
+            // networkIdentity.GetSocket().Emit("collisionDestroy", new JSONObject(JsonUtility.ToJson(CollisionData)));
+            networkIdentity.GetSocket().Emit("collisionDestroy", new JSONObject(JsonUtility.ToJson(new IdData() {
+            id = networkIdentity.GetID(),
+            ObjCollidedWith = ni.GetID()
 
-                // networkIdentity.GetSocket().Emit("collisionDestroy", new JSONObject(JsonUtility.ToJson(CollisionData)));
-                networkIdentity.GetSocket().Emit("collisionDestroy", new JSONObject(JsonUtility.ToJson(new IdData() {
-                id = networkIdentity.GetID(),
-                ObjCollidedWith = ni.GetID()
-
-                })));
-                this.gameObject.SetActive( false);
-                //audioSource.PlaySFX(BulletImpact, .3f);
+            })));
+            this.gameObject.SetActive( false);
+            //audioSource.PlaySFX(BulletImpact, .3f);
         }
-       // }
     }
 }
 

@@ -43,6 +43,7 @@ public class SpawnEffect : MonoBehaviour {
 
     void OnDisable()
     {
+        if(!audioSource == null)
         audioSource.StopSFX2("Alien Ship Hum Loop 1");
         //audioSource.StopCoroutine("Alien Ship Hum Loop 1");
         foreach (MeshRenderer child in children.Skip(1))
@@ -98,7 +99,7 @@ public class SpawnEffect : MonoBehaviour {
 
             firstTime = false;
             ps.Stop();
-            audioSource.PlaySFX2("Alien Ship Hum Loop 1", .7f);
+            audioSource.PlaySFX2("Alien Ship Hum Loop 1", .9f);
             var i = 0;
             foreach (MeshRenderer child in children.Skip(1))
             {

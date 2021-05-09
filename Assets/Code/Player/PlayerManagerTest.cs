@@ -263,7 +263,7 @@ public class PlayerManagerTest : MonoBehaviour
         if (Input.GetAxis("Fire2") == 1f)
         {
 
-            engLight.intensity = Mathf.Lerp(engLight.intensity, 2f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
+            engLight.intensity = Mathf.Lerp(engLight.intensity, 3f, Time.deltaTime * NetworkClient.SERVER_UPDATE_TIME);
             activeForwardSpeed =  Mathf.Lerp(activeForwardSpeed, Input.GetAxisRaw("Fire2") * ForwardSpeed, forwardAcceleration * Time.deltaTime);
             rb.velocity += transform.forward * activeForwardSpeed * Time.deltaTime;
         }

@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     #region Static Instance
     private static AudioManager instance;
     public List<AudioClip> BGM;
+    public List<AudioClip> FX;
     public static AudioManager Instance
     {
         get
@@ -79,10 +80,10 @@ public class AudioManager : MonoBehaviour
             {
                 //time = 0.0f;
                 trackCount++;
-                Debug.Log(trackCount);
+                //Debug.Log(trackCount);
                 PlayMusicWithFade(BGM[trackCount], musicSource);
                 
-                if (trackCount == 10)
+                if (trackCount == 12)
                     trackCount = 0;
             }
         }
@@ -124,12 +125,18 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
+    public void PlaySFX(string clip, float volume)
+    {
+        AudioClip fx = FX.Find( x => x.name == clip);
+        sfxSource.PlayOneShot(fx, volume);
+    }
+
     public void PlaySFX2(string clip, float volume)
     {
         Debug.Log(clip);
       
         //s = Array.Find(sounds, sound => sound.name == name);
-        sfxSource2.clip = BGM.Find(x => x.name == clip);
+        sfxSource2.clip = FX.Find(x => x.name == clip);
         //Debug.Log(sfxSource2.clip.name);
         sfxSource2.volume = volume;
         sfxSource2.Play();

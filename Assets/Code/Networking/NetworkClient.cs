@@ -108,13 +108,13 @@ public class NetworkClient : SocketIOComponent
             //passed data
             string id = E.data["id"].ToString();
             id = id.Trim('"');
-            Debug.Log("id :" + id);
+            //Debug.Log("id :" + id);
             float x = E.data["position"]["x"].f;
-            Debug.Log("X :" + x);
+            //Debug.Log("X :" + x);
             float y = E.data["position"]["y"].f;
-            Debug.Log("Y :" + y);
+            //Debug.Log("Y :" + y);
             float z = E.data["position"]["z"].f;
-            Debug.Log("Z :" + z);
+            //Debug.Log("Z :" + z);
             if (!serverObjects.ContainsKey(id))
             {
                 GameObject go = Instantiate(playerPrefab, networkContainer);
@@ -713,6 +713,10 @@ public class NetworkClient : SocketIOComponent
             float health = E.data["health"].f;
             
             NetworkIdentity ni = serverObjects[id];
+            if (ni.IsControlling() == true)
+            {
+                audioSource.PlaySFX("WPN_SCI-FI_FIRE_05", .3f);
+            }
             ni.GetComponent<HealthBar>().SetHealth(health);
          
         });
@@ -723,6 +727,7 @@ public class NetworkClient : SocketIOComponent
             string id = E.data["id"].ToString();
             id = id.Trim('"');
             float score = E.data["score"].f;
+
             NetworkIdentity ni = serverObjects[id];
             ni.GetComponent<PlayerScore>().SetPlayerScore(score); 
             //ni.GetComponent<DamagePopUp>().SetUpPopUp(score);
@@ -758,6 +763,10 @@ public class NetworkClient : SocketIOComponent
             DamagePopUp points = spawnedObject.GetComponent<DamagePopUp>();
             points.SetUpPopUp(score, new Vector3(x, y, z));
             //Debug.Log("HI ");
+            bool regularSoundfx = score == 200 ? true : false;
+            //AudioSource activeSource = (firstMusicSourceIsPlaying) ? musicSource : musicSource2;
+            AudioClip clip = (regularSoundfx) ? audioSource.FX[2] : audioSource.FX[1];
+            audioSource.PlaySFX(clip, 1f);
 
         });
 
@@ -799,6 +808,7 @@ public class NetworkClient : SocketIOComponent
 
     public void OnQuit()
     {
+        audioSource.StopSFX2("Alien Ship Hum Loop 1");
         Debug.Log("Quitting server");
         Emit("quitGame");
         ReturnToMainMenu();
